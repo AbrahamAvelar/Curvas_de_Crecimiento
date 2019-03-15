@@ -4,6 +4,6 @@ function NuevosDias = EncuentraDias(bgdata,odTh)
 %odTh debe ser positivo, cuanto tiene que haber bajado la OD para que le
 %digas que es nuevo dia
 diffOD = diff(bgdata.OD,1,1);
-dias=find(mean(diffOD')<-odTh);
+dias=find(nanmean(diffOD')<-odTh);
 NuevosDias=[1 dias+1];
 end
