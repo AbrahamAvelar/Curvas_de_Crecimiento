@@ -1,14 +1,15 @@
 function BgDataAll = ReadTecanFiles(directorio, appendTecanFiles, fluorescencias, BgDataAll)
-% BgDataAll = ReadTecanFiles(directorio, appendTecanFiles, fluorescencias, BgDataAllIncompleto)
-% si no pones directorio, entonces toma la carpeta en la que estás
+% BgDataAll = ReadTecanFiles(directorio, appendTecanFiles, fluorescencias)
+% si no pones directorio, entonces toma la carpeta en la que est�s
 % appendTecanFiles=0 es cuando es nuevo experimento, =1 es para solo poner
-% los que falten y en ese caso debes poner el 4to parámetro con la
+% los que falten y en ese caso debes poner el 4to par�metro con la
 % estructura que tiene los datos previamente cargados
 % fluorescencias = 0 es solo la OD.
 % Los nombres de los archivos deben ser "PL1-YYMMDDHHMMSS" 
-% tienen que empezar con PL seguidos del nùmero de plato, luego un guión y
-% finalmente la fecha con dos dìgitos de año, mes, dìa, minuto y segundo
-% %contiene la función strsplit
+% tienen que empezar con PL seguidos del n�mero de plato, luego un gui�n y
+% finalmente la fecha con dos d�gitos de a�o, mes, d�a, minuto y segundo
+% %contiene la funci�n strsplit
+% 
 
 if nargin<1
     directorio=pwd;
@@ -31,13 +32,14 @@ for i=1:length(archivos)
     temp=cell2mat(nombre(1));
     plato=str2num(temp(3:end));
     x=cell2mat(nombre(2));
-    diahora=datenum(strcat(x(1:2),'/',x(3:4),'/',x(5:6),'-',x(7:8),':',x(9:10),':',x(11:12) ));
-    
+    %diahora=datenum(strcat(x(1:2),'/',x(3:4),'/',x(5:6),'-',x(7:8),':',x(9:10),':',x(11:12) ));
+    %diahora=datenum(strcat(x(3:4),'/',x(5:6),'/',x(7:8),'-',x(9:10),':',x(11:12),':',x(13:14) ), 'YY/');
+    diahora=datenum(strcat(x(3:4),x(5:6),x(7:8),x(9:10),x(11:12),x(13:14) ), 'YYmmddHHMMSS');
     if appendTecanFiles == 0;
    	if preplato~=plato %como entran en orden alfabetico, esto hace que vaya creando nuevos espacios para cada plato solo se descomenta cuando va empezando el experimento
             BgDataAll(plato).OD=[];
             if fluorescencias
-                BgDataAll(plato).YFP=[];
+                BgDataAll(plato).CFP=[];
                 BgDataAll(plato).RFP=[];
             end
             BgDataAll(plato).t=[];
@@ -50,23 +52,23 @@ for i=1:length(archivos)
 	i/length(archivos)
     [NUM , ~, RAW]=xlsread( archivos(i).name);
     
-    if ~strcmp(RAW(18,1), 'Bandwidth') %si no dice Bandwidth quiere decir que se leyò fuera de Evoware y se tiene que recorrer una posicion
+    if ~strcmp(RAW(18,1), 'Bandwidth') %si no dice Bandwidth quiere decir que se ley� fuera de Evoware y se tiene que recorrer una posicion
         sumar=1;
     else
         sumar=0;
     end
-    
+    archivos(i).name
     od=(NUM(9-sumar:16-sumar,:));
     toc(y)
     
     if fluorescencias
     
-        if length(NUM)>80 %quiere decir que el archivo tiene más filas de 80 solo cuando midió los 3 parámetros
+        if length(NUM)>80 %quiere decir que el archivo tiene m�s filas de 80 solo cuando midi� los 3 par�metros
             clear rfp CFP
             rfp=(NUM(42-sumar:49-sumar,:));
             CFP=(NUM(75-sumar:82-sumar,:));
         else
-            clear rfp YFP
+            clear rfp CFP
             rfp(1:96,1)=0;
             CFP(1:96,1)=0;
         end
