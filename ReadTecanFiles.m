@@ -9,7 +9,7 @@ function BgDataAll = ReadTecanFiles(directorio, appendTecanFiles, fluorescencias
 % tienen que empezar con PL seguidos del n�mero de plato, luego un gui�n y
 % finalmente la fecha con dos d�gitos de a�o, mes, d�a, minuto y segundo
 % %contiene la funci�n strsplit
-% 
+% Los datos quedan del 1-8 son toda la fila 1, luego 9-16 es la fila 2, aquí un link para ver todas las posiciones: https://docs.google.com/spreadsheets/d/1YN5GIjxBI5247z9Tr3NjPmExv4c6REf0-7YrrhtDW8I/edit?usp=sharing
 
 if nargin<1
     directorio=pwd;
